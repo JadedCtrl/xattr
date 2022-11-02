@@ -16,7 +16,7 @@
 ;;
 
 (module xattr
-  (get-xattr set-xattr remove-xattr list-xattr split-list)
+  (get-xattr set-xattr remove-xattr list-xattr)
 
 (import (chicken base) (chicken memory) srfi-1 scheme (chicken foreign) srfi-12)
 
@@ -159,13 +159,12 @@
 ;; one-dimensional array with given length and strings separated by a given delimeter.
 ;; This takes that sort of pointer and gives you a nice list of strings.
 (define (pointer->delimited-string-list pointer length delimiter)
-  (let ([is-zero (lambda (num) (eq? num 0))]
-		[map-to-char (lambda (a) (map integer->char a))])
+  (let* ([is-zero (lambda (num) (eq? num 0))]
+		[map-to-char (lambda (a) (map integer->char a))]
+		[byte-list (drop-right (pointer->integers pointer length) 1)])
 	(map list->string
 		 (map map-to-char
-			  (split-list is-zero
-						  (drop-right
-						   (pointer->integers pointer length) 1))))))
+			  (split-list is-zero byte-list)))))
 
 
 ;; Takes a pointer and returns a list of bytes of a given length
