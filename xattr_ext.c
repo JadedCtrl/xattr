@@ -22,15 +22,15 @@
 char*
 get_xattr(const char* path, const char* attr, int* error_code)
 {
-	ssize_t value_length = getxattr(path, attr, NULL, 0);
-	if (value_length == -1) {
+	ssize_t value_size = getxattr(path, attr, NULL, 0);
+	if (value_size == -1) {
 		*error_code = errno;
 		return NULL;
 	}
 
-	char* value = (char*) malloc(value_length);
-	ssize_t new_length = getxattr(path, attr, value, value_length);
-	*error_code = (new_length == -1) ? errno : 0;
+	char* value = (char*) malloc(value_size + 1);
+	ssize_t new_size = getxattr(path, attr, value, value_size + 1);
+	*error_code = (new_size == -1) ? errno : 0;
 
 	return value;
 }
@@ -55,8 +55,8 @@ list_xattr(const char* path, ssize_t* size, int* error_code)
 		return NULL;
 	}
 
-	char* value = (char*) malloc(value_size);
-	*size = llistxattr(path, value, value_size);
+	char* value = (char*) malloc(value_size + 1);
+	*size = llistxattr(path, value, value_size + 1);
 	*error_code = (*size == -1) ? errno : 0;
 	return value;
 }
