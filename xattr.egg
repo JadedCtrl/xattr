@@ -1,0 +1,9 @@
+;; -*- Scheme -*-
+((synopsis "Access to extended attributes")
+ (author "Jaidyn Ann")
+ (category net)
+ (license "GPLv3")
+
+ (components (extension xattr)))
+;;						(csc-options "-O3" "-d1" "-X" "bind" "-s" "-k" "-emit-link-file" "xattr.link" "-o" "xattr_ext.o"))
+;;			 (c-object xattr_ext)))
