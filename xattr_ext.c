@@ -32,6 +32,7 @@ get_xattr(const char* path, const char* attr, int* error_code)
 	ssize_t new_size = getxattr(path, attr, value, value_size + 1);
 	*error_code = (new_size == -1) ? errno : 0;
 
+	value[value_size] = '\0';
 	return value;
 }
 
@@ -58,6 +59,8 @@ list_xattr(const char* path, ssize_t* size, int* error_code)
 	char* value = (char*) malloc(value_size + 1);
 	*size = llistxattr(path, value, value_size + 1);
 	*error_code = (*size == -1) ? errno : 0;
+
+	value[value_size] = '\0';
 	return value;
 }
 
